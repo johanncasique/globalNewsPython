@@ -1,7 +1,7 @@
 class CaraotaCommons:
     
     _baseURL = "http://www.caraotadigital.net/"
-    internationalEndpoint = _baseURL + "site/secciones/internacionales/"
+    internationalEndpoint = _baseURL + "category/internacionales/"
     nationalEndpoint = _baseURL + "category/nacionales/"
 
     headerRequest = {

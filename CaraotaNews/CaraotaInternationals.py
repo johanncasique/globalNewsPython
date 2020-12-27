@@ -4,27 +4,13 @@ from bs4 import BeautifulSoup
 import schedule
 import time
 from CaraotaNews.CaraotaCommons import CaraotaCommons
+import re
+import uuid
 
 
-class caraota_international:
-    site = "https://www.lapatilla.com/site/secciones/internacionales/"
-
-    hdr = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-        'Accept-Encoding': 'none',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Connection': 'keep-alive'
-    }
-
-    # config firebase
-    config = {
-        "apiKey": "AIzaSyAQWkofqy88scr-ckLlT-jSg3jIn4bYrTg",
-        "authDomain": "venezuelanews-7a888.firebaseapp.com",
-        "databaseURL": "https://venezuelanews-7a888.firebaseio.com",
-        "storageBucket": "projectId.appspot.com"
-    }
+class CaraotaInternationals:
+    ARTICLES_DIV_ClASS_NAME = "tdb_module_loop_2"
+    ARTICLES_DIV_KEY = "div"
 
     firebase = pyrebase.initialize_app(CaraotaCommons.configFirebase)
 
@@ -37,7 +23,7 @@ class caraota_international:
     soup = BeautifulSoup(page, "lxml")
     # print(soup.prettify())
 
-    nationalsCategory = soup.find_all("article")
+    nationalsCategory = soup.find_all(ARTICLES_DIV_KEY, ARTICLES_DIV_ClASS_NAME)
 
     nationalDescriptionList = list()
 
@@ -50,31 +36,34 @@ class caraota_international:
 
     def getInternationalsNews(self):
 
-        national_list = []
+        international_list = []
 
         for national in self.nationalsCategory:
 
-            title = national.find("a").get("title")
-            subtitle = national.find("div", {"class": "entry-content"}).find('p').text
-            img = ""
-            news_link = national.find("div", {"class": "entry-content"}).find("a").get("href")
+            title = national.find("h3", "entry-title").next.get("title")
+            subtitle = national.find("div", {"class": "td-excerpt"}).next
+            news_link = national.find("h3", "entry-title").find("a").get("href")
+            newsDate = national.find("time", "entry-date").get("datetime")
 
-            if national.find("img"):
-                print("national image %s\n" % national.find("img").get('src'))
-                img = national.find("img").get('src')
-            elif national.find('iframe'):
-                print("national image %s\n" % national.find("iframe").get('src'))
-                img = national.find("iframe").get('src')
+            img = ""
+            if national.find("a", "td-image-wrap"):
+                img_temp = national.find("a", "td-image-wrap").next.get('style')
+                img = re.search("(?P<url>https?://[^\s]+)", img_temp).group("url")
             else:
                 print("national image nil")
+                img = "NIL"
 
-            detail_sub, body_detail = self.getNationalDescription(news_link)
-
-            national_list.append(
-                dict(title=title, subtitle=subtitle, img=img, detailTitle=detail_sub, detailBody=body_detail))
+            international_list.append(
+                dict(title=title, 
+                subtitle=subtitle,  
+                img=img, 
+                newsDate=newsDate, 
+                newsLink=news_link,
+                id=str(uuid.uuid4())
+                ))
 
         self.db.child('internationals').child('news').remove()
-        self.db.child("internationals").child("news").set(national_list)
+        self.db.child("internationals").child("news").set(international_list)
 
 
     # Get Description news

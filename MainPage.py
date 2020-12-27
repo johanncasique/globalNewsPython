@@ -1,28 +1,27 @@
 from CaraotaRegionals import Regional
-from CaraotaNationals import CaraotaNationals
+from CaraotaNews.CaraotaNationals import CaraotaNationals
+from CaraotaNews.CaraotaInternationals import CaraotaInternationals
 import time
 import schedule
 
-nationalRequest = CaraotaNationals()
-nationalRequest.getNationalNews()
 
-# def job():
-#     #regional call
-#       #request = Regional()
-#       #request.getRegionalNews()
-#     #national call
-#       nationalsRequest = CaraotaNationals()
-#       nationalsRequest.getNationalNews
-#     #internationals
-#      # internationalRequest =  caraota_international()
-#       #internationalRequest.getInternationalsNews()
-#       #print("working...")
+def job():
+    #regional call
+      #request = Regional()
+      #request.getRegionalNews()
+    #national call
+      nationalsRequest = CaraotaNationals()
+      nationalsRequest.getNationalNews()
+    #internationals
+      internationalRequest =  CaraotaInternationals()
+      internationalRequest.getInternationalsNews()
+      #print("working...")
 
-# schedule.every(50).seconds.do(job)
+schedule.every(10).seconds.do(job)
 
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
 
 
