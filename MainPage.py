@@ -1,6 +1,7 @@
 from CaraotaRegionals import Regional
 from CaraotaNews.CaraotaNationals import CaraotaNationals
 from CaraotaNews.CaraotaInternationals import CaraotaInternationals
+from CaraotaNews.CaraotaRedNews import CaraotaRedNews
 import time
 import schedule
 
@@ -16,6 +17,9 @@ def job():
       internationalRequest =  CaraotaInternationals()
       internationalRequest.getInternationalsNews()
       #print("working...")
+    #redNews
+      redNewsRequest = CaraotaRedNews()
+      redNewsRequest.getRedNews()
 
 schedule.every(10).seconds.do(job)
 
