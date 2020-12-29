@@ -4,7 +4,15 @@ class CaraotaCommons:
     internationalEndpoint = _baseURL + "category/internacionales/"
     nationalEndpoint = _baseURL + "category/nacionales/"
     redNewsEndpoint = _baseURL + "category/sucesos"
-    
+    techNewsEndpoint = _baseURL + "category/tecnologia"
+    entertainmentNewsEndpoint = _baseURL + "category/entretenimiento"
+    hotZoneNews = _baseURL + "category/zona-prohibida"
+    funZoneNews = _baseURL + "category/zona-divertida"
+    sportNewsEndpoint = _baseURL + "category/deportes"
+    tipsNewsEndpoint = _baseURL + "category/caraota-tips"
+    misteryNewsEndponit = _baseURL +  "category/misterios"
+    petsNewsEndpoint = _baseURL + "category/de-buenas-pulgas"
+    lgtbNewsEndpoint = _baseURL + "category/lgbt"
 
     headerRequest = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
